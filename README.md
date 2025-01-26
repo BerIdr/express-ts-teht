@@ -1,4 +1,4 @@
 ![KUVAKAAPPAUS](./images/testit.png)
--Ylläolevasta linkistä löytyvät testien tulokset.
+-Ylläolevassa kuvassa testien tulokset.
 
 Github repositorio -> [Repositorio](https://github.com/BerIdr/express-ts-teht)
