@@ -1,16 +1,15 @@
 import app from '../src/app';
 import request from 'supertest';
-// import {Article, Author} from '../src/types/LocalTypes';
-// import randomstring from 'randomstring';
+import {Article, Author} from '../src/types/LocalTypes';
+import randomstring from 'randomstring';
 
 // test that server is running
 describe('GET /', () => {
   it('should return 200 OK', async () => {
-    await request(app).get('/').expect(200);
+    await request(app).get('/api/v1').expect(200);
   });
 });
 
-/* TODO: Remove this line to start the integration tests
 // Create new article for testing
 const article: Article = {
   id: 1, // some random id
@@ -64,38 +63,38 @@ describe('Testing authors endpoint', () => {
   });
 
   // Test GET /authors/:id
-  it('GET /authors/:id should return the author', async () => {
-    try {
-      const response = await request(app)
-        .get(`/api/v1/authors/${author.id}`)
-        .expect(200);
-      const foundAuthor = response.body as Author;
-      expect(foundAuthor).toEqual(author);
-    } catch (error) {
-      console.error('Get author by id test failed:', error);
-      throw error;
-    }
+   it('GET /authors/:id should return the author', async () => {
+     try {
+       const response = await request(app)
+         .get(`/api/v1/authors/${author.id}`)
+         .expect(200);
+       const foundAuthor = response.body as Author;
+       expect(foundAuthor).toEqual(author);
+     } catch (error) {
+       console.error('Get author by id test failed:', error);
+       throw error;
+     }
   });
 
   // Test PUT /authors/:id
   it('PUT /authors/:id should update the author', async () => {
-    try {
-      const updatedAuthor = {
-        name: 'Updated Author',
-        email: randomstring.generate(7) + '@metropolia.fi',
-      };
-      const response = await request(app)
-        .put(`/api/v1/authors/${author.id}`)
-        .send(updatedAuthor)
-        .expect(200);
-      const authorResponse = response.body as Author;
-      expect(authorResponse.name).toBe(updatedAuthor.name);
+     try {
+       const updatedAuthor = {
+         name: 'Updated Author',
+         email: randomstring.generate(7) + '@metropolia.fi',
+       };
+       const response = await request(app)
+       .put(`/api/v1/authors/${author.id}`)
+         .send(updatedAuthor)
+         .expect(200);
+       const authorResponse = response.body as Author;
+       expect(authorResponse.name).toBe(updatedAuthor.name);
       expect(authorResponse.email).toBe(updatedAuthor.email);
-    } catch (error) {
+  }catch (error) {
       console.error('Update author test failed:', error);
       throw error;
-    }
-  });
+     }
+   });
 });
 
 // integration tests to test the endpoints in src/api/v1/routes/articleRouter.ts
@@ -189,20 +188,21 @@ describe('Testing articles endpoint', () => {
 describe('Delete test data', () => {
   // Test DELETE /articles/:id
   it('DELETE /articles/:id should delete the article', async () => {
-    try {
-      await request(app)
-        .delete(`/api/v1/articles/${article.id}`)
-        .send({author_id: article.author_id}) // Use article.author_id instead of author.id
-        .expect(204);
+   try {
+     const response = await request(app)
+       .delete(`/api/v1/articles/${article.id}`)
+       .send({ author_id: article.author_id }) // Use article.author_id instead of author.id
+       .expect(204);
+     if (response.status !== 204) {
+       throw new Error(`Failed to delete article: ${response.text}`);
+     }
     } catch (error) {
-      console.error('Delete test failed:', error);
+       console.error('Delete test failed:', error);
       throw error;
-    }
-  });
+     }
+   });
 
-  // Test DELETE /authors/:id
-  it('DELETE /authors/:id should delete the author', async () => {
-    await request(app).delete(`/api/v1/authors/${author.id}`).expect(204);
+   it('DELETE /authors/:id should delete the author', async () => {
+   await request(app).delete(`/api/v1/authors/${author.id}`).expect(204);
   });
 });
-TODO: Remove this line to start the integration tests */
